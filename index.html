@@ -8,7 +8,6 @@
     :root {
       /* Christmas-flavored dark mode */
       --bg: #020617;
-      --bg-panel: #020617;
       --border-subtle: #1f2933;
       --text-main: #e5e7eb;
       --text-muted: #9ca3af;
@@ -16,7 +15,6 @@
       --accent-soft: rgba(248, 113, 113, 0.25);
       --accent-strong: rgba(248, 113, 113, 0.45);
       --radius-pill: 999px;
-      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.7);
       --shadow-subtle: 0 1px 4px rgba(15, 23, 42, 0.7);
     }
 
@@ -41,25 +39,14 @@
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      padding: 32px 16px 48px;
+      padding: 40px 16px 48px;
     }
 
+    /* No floating card – just constrain width and let it sit on background */
     .shell {
       width: 100%;
       max-width: 900px;
-      background:
-        radial-gradient(circle at top left, #166534 0, #020617 55%),
-        radial-gradient(circle at bottom right, #1f2937 0, #020617 70%);
-      border-radius: 28px;
-      box-shadow: var(--shadow-soft);
-      padding: 28px 20px 30px;
-      border: 1px solid rgba(248, 250, 252, 0.06);
-    }
-
-    @media (min-width: 768px) {
-      .shell {
-        padding: 32px 30px 34px;
-      }
+      padding: 0;
     }
 
     header {
@@ -182,8 +169,8 @@
 
     .gift-card {
       background: transparent;
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
+      border-top: 1px solid rgba(22, 163, 74, 0.55); /* green-ish */
+      border-bottom: 1px solid rgba(248, 113, 113, 0.4); /* subtle red */
       padding: 12px 4px 12px;
       display: flex;
       flex-direction: row;
@@ -256,6 +243,20 @@
       font-weight: 600;
       letter-spacing: -0.01em;
       margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* tiny red dot before title */
+    .gift-title::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      display: inline-block;
+      transform: translateY(-1px);
     }
 
     .category-tag {
@@ -424,9 +425,9 @@
         item: "Beer making gear (5 gal kettle, carboy, airlock, autosiphon)",
         category: "Beer making",
         link: "",
-        approxPrice: 99, // updated
+        approxPrice: 99,
         notes: "",
-        image: "https://cdn-ddian.nitrocdn.com/EsjHZfmtAUbTiXeHENILHlUqnmTcNOtP/assets/images/optimized/rev-c391037/www.micetcraft.com/wp-content/uploads/2023/02/The-Seven-Steps-of-Brewing-Beer.jpg" // you can add a generic homebrew kit image later if you want
+        image: "" // you can add a generic homebrew kit image later if you want
       },
       {
         id: "fazeley-flow",
