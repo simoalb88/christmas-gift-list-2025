@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simo’s Christmas Gift List 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      /* Christmas-flavored dark mode */
+      --bg: #020617;
+      --bg-panel: #020617;
+      --border-subtle: #1f2933;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent: #f97373; /* warm red */
+      --accent-soft: rgba(248, 113, 113, 0.25);
+      --accent-strong: rgba(248, 113, 113, 0.45);
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.7);
+      --shadow-subtle: 0 1px 4px rgba(15, 23, 42, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Text", "Segoe UI", sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at top, #14532d 0, #020617 55%),
+        radial-gradient(circle at bottom, #4b5563 0, #020617 60%);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px 48px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 900px;
+      background:
+        radial-gradient(circle at top left, #166534 0, #020617 55%),
+        radial-gradient(circle at bottom right, #1f2937 0, #020617 70%);
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      padding: 28px 20px 30px;
+      border: 1px solid rgba(248, 250, 252, 0.06);
+    }
+
+    @media (min-width: 768px) {
+      .shell {
+        padding: 32px 30px 34px;
+      }
+    }
+
+    header {
+      margin-bottom: 18px;
+    }
+
+    header h1 {
+      font-size: clamp(1.6rem, 2.2vw, 1.9rem);
+      letter-spacing: -0.03em;
+      margin: 0 0 6px;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .subline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .pill-soft {
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      background: var(--accent-soft);
+      color: #fee2e2;
+      font-weight: 500;
+      font-size: 0.78rem;
+      border: 1px solid rgba(248, 113, 113, 0.7);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin: 18px 0 10px;
+      justify-content: space-between;
+    }
+
+    .controls-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      padding: 5px 11px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.9);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease, color 0.15s ease,
+        border-color 0.15s ease, box-shadow 0.15s ease, transform 0.06s ease;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .chip span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--border-subtle);
+    }
+
+    .chip.active {
+      background: var(--accent-strong);
+      color: #fef2f2;
+      border-color: rgba(248, 113, 113, 0.9);
+      box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.85);
+      transform: translateY(-0.5px);
+    }
+
+    .chip.active span.dot {
+      background: #fee2e2;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .meta-row button.reset-filters {
+      border: none;
+      padding: 0;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .gift-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .gift-card {
+      background: transparent;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 4px 12px;
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      position: relative;
+    }
+
+    .gift-card.claimed {
+      opacity: 0.7;
+    }
+
+    .gift-card.claimed .gift-title {
+      text-decoration: line-through;
+    }
+
+    @media (max-width: 600px) {
+      .gift-card {
+        flex-direction: column;
+      }
+    }
+
+    .gift-image-wrap {
+      flex: 0 0 170px;
+      border-radius: 14px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top left, #14532d 0, #020617 65%);
+      position: relative;
+      min-height: 110px;
+    }
+
+    .gift-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gift-image-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #9ca3af;
+      font-size: 0.8rem;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .gift-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    .gift-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+
+    .gift-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .category-tag {
+      font-size: 0.74rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #052e16;
+      border: 1px solid #15803d;
+      color: #bbf7d0;
+      white-space: nowrap;
+    }
+
+    .gift-body {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      min-height: 22px;
+    }
+
+    .gift-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 6px;
+      align-items: center;
+    }
+
+    .price-pill {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: #111827;
+      color: #e5e7eb;
+      transition: background 0.15s ease, color 0.15s ease,
+        border-color 0.15s ease, transform 0.08s ease;
+      white-space: nowrap;
+    }
+
+    .btn.primary {
+      background: #0f172a;
+      border-color: #1f2937;
+    }
+
+    .btn.primary:hover {
+      background: #020617;
+      border-color: var(--accent);
+      color: #fee2e2;
+      transform: translateY(-0.5px);
+    }
+
+    .btn.subtle {
+      background: #020617;
+      border-color: #1f2937;
+      color: #e5e7eb;
+    }
+
+    .btn.subtle.active {
+      background: #14532d;
+      border-color: #22c55e;
+      color: #bbf7d0;
+    }
+
+    .btn:hover {
+      background: #111827;
+    }
+
+    .btn-icon {
+      font-size: 0.85em;
+    }
+
+    .empty-state {
+      margin-top: 18px;
+      padding: 16px 12px;
+      border-radius: 16px;
+      border: 1px dashed var(--border-subtle);
+      background: rgba(15, 23, 42, 0.85);
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main class="shell">
+      <header>
+        <h1>Simo’s Christmas Gift List 2025</h1>
+        <p>Things I’d genuinely enjoy &amp; actually use – no pressure to buy anything.</p>
+        <div class="subline">
+          <span class="pill-soft">Updated live</span>
+          <span>If you’re getting something, you can mark it as “claimed” on your device.</span>
+        </div>
+      </header>
+
+      <section class="controls">
+        <span class="controls-label">Filter by price:</span>
+        <div class="chips" id="priceChips"></div>
+      </section>
+
+      <div class="meta-row">
+        <div id="resultCount"></div>
+        <button class="reset-filters" id="resetFilters" type="button">
+          Reset filters
+        </button>
+      </div>
+
+      <section class="gift-grid" id="giftGrid"></section>
+
+      <div class="empty-state" id="emptyState" style="display: none;">
+        No items match this filter. Try a different price range.
+      </div>
+    </main>
+  </div>
+
+  <script>
+    /*
+      Image URLs are embedded from the ones you added in the canvas.
+      You can swap them out later if you find better shots.
+    */
+
+    const gifts = [
+      {
+        id: "shargeek-140",
+        item: "Shargeek 140 Power Bank",
+        category: "Travel",
+        link: "https://sharge.com/products/shargeek-140",
+        approxPrice: 70,
+        notes: "",
+        image: "https://sharge.com/cdn/shop/files/140W_a48c0846-ca3b-4b5f-9b29-f4b70325a19d.png?v=1759062463&width=600"
+      },
+      {
+        id: "nomad-tracking-card",
+        item: "Nomad Tracking Card Air",
+        category: "Travel",
+        link: "https://nomadgoods.com/products/tracking-card",
+        approxPrice: 29,
+        notes: "",
+        image: "https://cdn.shopify.com/s/files/1/0384/6721/files/Banner_1_af010752-62f8-42b1-a8a3-26dfbe03fa6b.jpg?v=1716241304&width=2400&height=1133&crop=center"
+      },
+      {
+        id: "ugmonk-analog-travel",
+        item: "Ugmonk Analog Travel Case (Walnut, 3 Card Packs)",
+        category: "Stationery",
+        link: "https://ugmonk.com/collections/best-sellers/products/analog-travel-case-3-card-packs-walnut?variant=4583770472463",
+        approxPrice: 90, // rough
+        notes: "",
+        image: "https://ugmonk.com/cdn/shop/files/wood-card-case-14_740x918_crop_center.jpg?v=1763142025"
+      },
+      {
+        id: "beer-making-kit",
+        item: "Beer making gear (5 gal kettle, carboy, airlock, autosiphon)",
+        category: "Beer making",
+        link: "",
+        approxPrice: 99, // updated
+        notes: "",
+        image: "https://cdn-ddian.nitrocdn.com/EsjHZfmtAUbTiXeHENILHlUqnmTcNOtP/assets/images/optimized/rev-c391037/www.micetcraft.com/wp-content/uploads/2023/02/The-Seven-Steps-of-Brewing-Beer.jpg" // you can add a generic homebrew kit image later if you want
+      },
+      {
+        id: "fazeley-flow",
+        item: "The Fazeley Flow – One Pint watering can",
+        category: "Home",
+        link: "https://haws1886.com/collections/the-fazeley-flow/products/the-fazeley-flow-graphite-one-pint",
+        approxPrice: 75,
+        notes: "",
+        image: "https://haws1886.com/cdn/shop/products/Haws-14994_v2_1080x.jpg?v=1670834750"
+      },
+      {
+        id: "rotring-600",
+        item: "rOtring 600 Mechanical Pencil (0.5 mm)",
+        category: "Stationery",
+        link: "https://www.rotring.com/pens-pencils/mechanical-pencils/rotring-600/SP_1532018.html",
+        approxPrice: 44,
+        notes: "",
+        image: "https://newellbrands.imgix.net/bec3251b-f883-333d-b6cc-7422b0729c5b/bec3251b-f883-333d-b6cc-7422b0729c5b.jpg?fm=jpg&q=85&w=1188"
+      },
+      {
+        id: "timemore-nano",
+        item: "Timemore Black Mirror Nano Coffee Scale (black)",
+        category: "Home",
+        link: "https://www.timemore.com/products/timemore-black-mirror-nano-espresso-coffee-weighing-with-timer-white",
+        approxPrice: 89,
+        notes: "",
+        image: "https://www.timemore.com/cdn/shop/products/15_1800x1800.jpg?v=1709799666"
+      },
+      {
+        id: "rains-bum-bag-mini",
+        item: "Rains Bum Bag Mini",
+        category: "Travel",
+        link: "https://www.us.rains.com/products/bum-bag-mini",
+        approxPrice: 75,
+        notes: "Had this before and loved size/style.",
+        image: "https://www.us.rains.com/cdn/shop/files/7386fa06-256c-4a2d-841d-03384ce45113_8751ad41-7925-4a3d-a06c-5cca11d09440.jpg?crop=region&crop_height=2850&crop_left=0&crop_top=0&crop_width=1900&height=2304&v=1753857218&width=1536"
+      }
+    ];
+
+    const giftGrid = document.getElementById("giftGrid");
+    const priceChips = document.getElementById("priceChips");
+    const resultCount = document.getElementById("resultCount");
+    const emptyState = document.getElementById("emptyState");
+    const resetFiltersBtn = document.getElementById("resetFilters");
+
+    // 'all' | 'under50' | 'under100' | 'over100'
+    let activePrice = "all";
+
+    function getClaimedSet() {
+      try {
+        const raw = localStorage.getItem("giftlist_claimed");
+        if (!raw) return new Set();
+        return new Set(JSON.parse(raw));
+      } catch {
+        return new Set();
+      }
+    }
+
+    function saveClaimedSet(set) {
+      try {
+        localStorage.setItem("giftlist_claimed", JSON.stringify(Array.from(set)));
+      } catch {
+        // ignore
+      }
+    }
+
+    function buildPriceChips() {
+      const options = [
+        { key: "all", label: "All prices" },
+        { key: "under50", label: "Under $50" },
+        { key: "under100", label: "Under $100" },
+        { key: "over100", label: "Over $100" }
+      ];
+
+      priceChips.innerHTML = "";
+      options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chip" + (opt.key === activePrice ? " active" : "");
+        btn.dataset.priceKey = opt.key;
+        btn.innerHTML = `<span class="dot"></span><span>${opt.label}</span>`;
+        btn.addEventListener("click", () => {
+          activePrice = opt.key;
+          document
+            .querySelectorAll(".chip")
+            .forEach(c =>
+              c.classList.toggle("active", c.dataset.priceKey === activePrice)
+            );
+          renderGifts();
+        });
+        priceChips.appendChild(btn);
+      });
+    }
+
+    function priceMatchesFilter(gift) {
+      const p = gift.approxPrice;
+      if (!p) return true; // show if we don't have a price
+
+      if (activePrice === "under50") return p < 50;
+      if (activePrice === "under100") return p < 100;
+      if (activePrice === "over100") return p >= 100;
+      return true;
+    }
+
+    function createGiftCard(gift, claimedSet) {
+      const card = document.createElement("article");
+      card.className = "gift-card";
+      if (claimedSet.has(gift.id)) {
+        card.classList.add("claimed");
+      }
+
+      const imageWrap = document.createElement("div");
+      imageWrap.className = "gift-image-wrap";
+
+      if (gift.image) {
+        const img = document.createElement("img");
+        img.src = gift.image;
+        img.alt = gift.item;
+        img.loading = "lazy";
+        img.className = "gift-image";
+        imageWrap.appendChild(img);
+      } else {
+        const fallback = document.createElement("div");
+        fallback.className = "gift-image-fallback";
+        fallback.textContent = gift.item;
+        imageWrap.appendChild(fallback);
+      }
+
+      const content = document.createElement("div");
+      content.className = "gift-content";
+
+      const header = document.createElement("div");
+      header.className = "gift-header";
+
+      const title = document.createElement("h2");
+      title.className = "gift-title";
+      title.textContent = gift.item;
+
+      const category = document.createElement("div");
+      category.className = "category-tag";
+      category.textContent = gift.category;
+
+      header.appendChild(title);
+      header.appendChild(category);
+
+      const body = document.createElement("div");
+      body.className = "gift-body";
+      body.textContent = gift.notes || "";
+
+      const footer = document.createElement("div");
+      footer.className = "gift-footer";
+
+      const price = document.createElement("div");
+      price.className = "price-pill";
+      if (gift.approxPrice) {
+        price.textContent = `≈ $${gift.approxPrice}`;
+      } else {
+        price.textContent = "Price: flexible";
+      }
+
+      const buttons = document.createElement("div");
+      buttons.className = "button-row";
+
+      if (gift.link) {
+        const linkBtn = document.createElement("button");
+        linkBtn.type = "button";
+        linkBtn.className = "btn primary";
+        linkBtn.innerHTML = `<span class="btn-icon">↗</span><span>Open link</span>`;
+        linkBtn.addEventListener("click", () => {
+          window.open(gift.link, "_blank", "noopener");
+        });
+        buttons.appendChild(linkBtn);
+      }
+
+      const claimedBtn = document.createElement("button");
+      claimedBtn.type = "button";
+      claimedBtn.className =
+        "btn subtle" + (claimedSet.has(gift.id) ? " active" : "");
+      claimedBtn.innerHTML = claimedSet.has(gift.id)
+        ? `<span class="btn-icon">✓</span><span>Claimed</span>`
+        : `<span class="btn-icon">＋</span><span>Mark claimed</span>`;
+
+      claimedBtn.addEventListener("click", () => {
+        const current = getClaimedSet();
+        if (current.has(gift.id)) {
+          current.delete(gift.id);
+        } else {
+          current.add(gift.id);
+        }
+        saveClaimedSet(current);
+        renderGifts();
+      });
+
+      buttons.appendChild(claimedBtn);
+
+      footer.appendChild(price);
+      footer.appendChild(buttons);
+
+      content.appendChild(header);
+      content.appendChild(body);
+      content.appendChild(footer);
+
+      card.appendChild(imageWrap);
+      card.appendChild(content);
+
+      return card;
+    }
+
+    function renderGifts() {
+      const claimedSet = getClaimedSet();
+      const filtered = gifts.filter(g => priceMatchesFilter(g));
+
+      giftGrid.innerHTML = "";
+      if (filtered.length === 0) {
+        emptyState.style.display = "block";
+      } else {
+        emptyState.style.display = "none";
+        filtered.forEach(g => {
+          giftGrid.appendChild(createGiftCard(g, claimedSet));
+        });
+      }
+
+      if (activePrice === "all") {
+        resultCount.textContent = `${gifts.length} items`;
+      } else {
+        resultCount.textContent = `${filtered.length} of ${gifts.length} items shown`;
+      }
+    }
+
+    resetFiltersBtn.addEventListener("click", () => {
+      activePrice = "all";
+      document
+        .querySelectorAll(".chip")
+        .forEach(c => c.classList.toggle("active", c.dataset.priceKey === "all"));
+      renderGifts();
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      buildPriceChips();
+      renderGifts();
+    });
+  </script>
+</body>
+</html>
