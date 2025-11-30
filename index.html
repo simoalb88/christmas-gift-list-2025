@@ -236,6 +236,7 @@
     border: 2px solid #00ff66;
     box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.7);
     min-height: 110px;
+    position: relative;
   }
 
   .gift-image {
@@ -384,7 +385,37 @@
     color: var(--text-muted);
     text-shadow: 0 0 4px #000000;
   }
-    /* Santa pixel-flight */
+
+  /* Snow overlay */
+  #snow-overlay {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 9000;
+  }
+
+  .snowflake {
+    position: absolute;
+    top: -10px;
+    color: #ffffff;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+    animation-name: snowFall;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes snowFall {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(110vh);
+    }
+  }
+
+  /* Santa pixel-flight */
   #santa-flight {
     position: fixed;
     top: 18%;
@@ -395,7 +426,7 @@
 
   .santa-sleigh {
     display: block;
-    width: 260px;
+    width: 350px;
     max-width: 40vw;
     height: auto;
     image-rendering: pixelated;
@@ -424,11 +455,7 @@
       transform: translateX(calc(-100vw - 320px)) translateY(0);
     }
   }
-    to {
-      transform: translateX(calc(100vw + 320px));
-    }
-  }
-</style>
+  </style>
 
 </head>
 <body>
@@ -746,28 +773,88 @@
       buildPriceChips();
       renderGifts();
     });
-      // Santa flight trigger on scroll to bottom
-    let santaHasFlown = false;
+
+    // Santa flight trigger on scroll to bottom (replayable)
+    let santaInFlight = false;
+    let lastScrollY = window.scrollY || 0;
+    let lastTopSnowTime = 0;
 
     function triggerSantaFlight() {
-      if (santaHasFlown) return;
-      santaHasFlown = true;
       const sleigh = document.getElementById("santaSleigh");
-      if (sleigh) {
-        sleigh.classList.add("fly");
+      if (!sleigh || santaInFlight) return;
+      santaInFlight = true;
+
+      // restart animation from the beginning
+      sleigh.classList.remove("fly");
+      void sleigh.offsetWidth; // force reflow
+      sleigh.classList.add("fly");
+    }
+
+    function startSnowfall() {
+      const existing = document.getElementById("snow-overlay");
+      if (existing) return;
+
+      const overlay = document.createElement("div");
+      overlay.id = "snow-overlay";
+      document.body.appendChild(overlay);
+
+      const flakesCount = 80;
+      for (let i = 0; i < flakesCount; i++) {
+        const flake = document.createElement("div");
+        flake.className = "snowflake";
+        flake.textContent = "❄";
+        flake.style.left = Math.random() * 100 + "vw";
+        flake.style.fontSize = 8 + Math.random() * 10 + "px";
+        flake.style.opacity = 0.7 + Math.random() * 0.3;
+        flake.style.animationDuration = 4 + Math.random() * 4 + "s";
+        flake.style.animationDelay = Math.random() * 2 + "s";
+        overlay.appendChild(flake);
       }
+
+      setTimeout(() => {
+        overlay.remove();
+      }, 7000);
     }
 
     window.addEventListener("scroll", () => {
-      if (santaHasFlown) return;
-      const scrollPosition = window.scrollY + window.innerHeight;
+      const currentY = window.scrollY || 0;
+      const now = Date.now();
+
+      // Bottom-of-page: trigger Santa flight
+      const scrollPosition = currentY + window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
       if (docHeight - scrollPosition < 40) {
         triggerSantaFlight();
       }
+
+      // Top-of-page: trigger a little snow burst when you "hit" the top
+      const justHitTop = currentY <= 0 && lastScrollY > 10;
+      const enoughTimePassed = now - lastTopSnowTime > 1200; // ~1.2s cooldown
+
+      if (justHitTop && enoughTimePassed) {
+        lastTopSnowTime = now;
+        // slight delay to feel like snow shakes loose after the bump
+        setTimeout(() => {
+          startSnowfall();
+        }, 80);
+      }
+
+      lastScrollY = currentY;
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const sleigh = document.getElementById("santaSleigh");
+      if (sleigh) {
+        sleigh.addEventListener("animationend", () => {
+          santaInFlight = false;
+        });
+      }
+
+      startSnowfall();
     });
   </script>
-    <div id="santa-flight" aria-hidden="true">
+
+  <div id="santa-flight" aria-hidden="true">
     <img
       id="santaSleigh"
       class="santa-sleigh"
@@ -775,10 +862,6 @@
       alt="Pixel Santa flying in his sleigh with reindeer"
     />
   </div>
-  </div>
 
 </body>
 </html>
-
-
-
